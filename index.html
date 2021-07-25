@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Пример изменения темы с помощью CSS-перменных + JS, c записью в localStorage</title>
+</head>
+
+<style>
+  [data-theme='light'] {
+    --text-color: #0f0b0b;
+    --bg-color: #f0f0f0;
+  }
+
+  [data-theme='dark'] {
+    --text-color: #f0f0f0;
+    --bg-color: #0f0b0b;
+  }
+
+  
+  [data-theme='light'] hr {
+    border: 1px solid var(--text-color);
+  }
+  
+  [data-theme='black'] hr {
+    border: 1px solid var(--text-color);
+  }
+
+  body {
+    font-family: sans-serif;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+
+    transition: color, background-color .3s linear;
+  }
+
+  .text {
+    font-size: 80px;
+  }
+</style>
+
+<body data-theme="light">
+  <button class="themeHandler">Change theme</button>
+  <hr>
+  <div class="text">Пример изменения темы с помощью CSS-перменных + JS, c записью в localStorage</div>
+</body>
+
+<script>
+  const themeHandler = document.querySelector('.themeHandler')
+  const body = document.body
+
+  const getThemeFromStorage = () => localStorage.getItem('currentTheme')
+  const setThemeToStorage = theme => localStorage.setItem('currentTheme', theme)
+
+  const currentTheme = getThemeFromStorage() || body.dataset.theme
+
+  body.setAttribute('data-theme', currentTheme)
+
+  const setTheme = () => {
+    if (getThemeFromStorage() === 'dark') {
+      body.setAttribute('data-theme', 'light')
+      setThemeToStorage('light')
+    } else {
+      body.setAttribute('data-theme', 'dark')
+      setThemeToStorage('dark')
+    }
+  }
+
+  themeHandler.addEventListener('click', setTheme)
+</script>
+
+</html>
